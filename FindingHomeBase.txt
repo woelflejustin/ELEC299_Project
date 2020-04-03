@@ -1,0 +1,42 @@
+int leftLineSensorPin, rightLineSensorPin;
+int homeBaseDetected = 0;
+int stoppedOnBase = 0;
+
+
+// DetectBlackSurface returns 1 if a dark surface is detected and returns a 0 if a white surface is
+// detected. A surface is only detected when both the left and right sensors are reading low values,
+// indicating they have detected a black surface. If one sensor is high and the other is low, the 
+// robot will turn slowly until the other side of the sensor detects the black surface. When this
+// occurs, the function returns 1.
+int DetectBlackSurface() {
+	if(!digitalRead(leftLineSensorPin) && !digitalRead(rightLineSensorPin)) {
+		return 1;
+	} else if (!digitalRead(leftLineSensorPin) && digitalRead(rightLineSensorPin)) {
+		while(digitalRead(leftLineSensorPin)) {
+			TurnRight(1);
+		}
+		Forward();
+		return 1;
+	} else if (digitalRead(leftLineSensorPin) && !digitalRead(rightLineSensorPin)) {
+		while(digitalRead(rightLineSensorPin)) {
+			TurnLeft(1);
+		}
+		Forward();
+		return 1;
+	} else {
+		return 0;
+	}
+}
+
+// HomeBase checks to see if a black surface has been detected and if it has the robot will continue
+// driving forward for 0.2s to ensure the wheels of the robot are on the home base. After the robot
+// stops a flag, stoppedOnBase, is raised to indicate the robot can now communicate its location.
+void HomeBase() {
+	if(DetectBlackSurface()) {
+		homeBaseDetected = 1;
+		delay(200);
+		Stop();
+		stoppedOnBase = 1;
+	}
+}
+
