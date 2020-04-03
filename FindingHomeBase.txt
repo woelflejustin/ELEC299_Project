@@ -36,6 +36,7 @@ void HomeBase() {
 		homeBaseDetected = 1;
 		delay(200);
 		Stop();
+		GetLocation();
 		stoppedOnBase = 1;
 	}
 }
