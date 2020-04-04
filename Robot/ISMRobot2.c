@@ -37,7 +37,7 @@ void loop()
   //driving code in direction of location[]
   int vectorx = x - IRlocationx;
     //driving code in direction of vectorx
-  int vectorx = x - IRlocationx;
+  int vectory = y - IRlocationy;
     //driving code in direction of vectorx
 
   radio.stopListening();                             //This sets the module as transmitter
